@@ -87,26 +87,39 @@ def generate_file_toml(input_file, output_file):
     config = {
         "packages": {"packages": []},
         "aur": {"aur_packages": []},
-        "flatpak": {"flatpak_packages": []},
+        "flatpak": {"flatpak_packages": []}
     }
 
-    with open(input_file, "r") as f:
-        for line in f:
-            key, value = line.split(":")
-            key = key.strip()
-            packages = [pkg.strip() for pkg in value.split(",")]
+    with open(input_file, 'r') as file:
+        for line in file:
+            line = line.strip()
+            if not line or ":" not in line:
+                # Ignore empty lines or lines without a colon
+                continue
 
-            if key == "packages":
-                config["packages"]["packages"].extend(packages)
-            elif key == "aur":
-                config["aur"]["aur_packages"].extend(packages)
-            elif key == "flatpak":
-                config["flatpak"]["flatpak_packages"].extend(packages)
+            try:
+                key, value = line.split(":", 1)
+                key = key.strip()
+                values = [v.strip() for v in value.split(",")]
 
-    with open(output_file, "w") as f:
-        toml.dump(config, f)
+                if key == "packages":
+                    config["packages"]["packages"].extend(values)
+                elif key == "aur":
+                    config["aur"]["aur_packages"].extend(values)
+                elif key == "flatpak":
+                    config["flatpak"]["flatpak_packages"].extend(values)
+                else:
+                    print(f"Warning: Unrecognized key '{key}' in input file.")
 
-    print(f"Generated TOML file from {input_file} and saved as {output_file}")
+            except ValueError as e:
+                print(f"Error processing line: '{line}'. Error: {e}")
+                continue
+
+    # Write the config to the output TOML file
+    with open(output_file, 'w') as toml_file:
+        toml.dump(config, toml_file)
+
+    print(f"TOML file generated at: {output_file}")
 
     # Ask user to review and edit the file
     review = input("Do you want to review and edit the file? (y/n): ").strip().lower()
