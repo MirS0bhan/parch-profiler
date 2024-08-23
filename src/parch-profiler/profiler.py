@@ -1,13 +1,19 @@
-from typing import List
+from typing import Dict
 
-import toml
 from pydantic import BaseModel
 
-from .pckmng import PackageConfig
+from pckmng import PackageConfig, pckmng_gen
+
 
 class Config(BaseModel):
-    packages: List[PackageConfig]
+    packages: Dict[str, PackageConfig]
 
 
-class Profiler:
+def install_config(conf: Config):
     pass
+
+
+def generate_config(*pm_names):
+    return Config(
+        packages=pckmng_gen(*pm_names)
+    ).model_dump()

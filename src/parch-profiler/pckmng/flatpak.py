@@ -4,7 +4,7 @@ from .base import PackageConfig, PackageManager
 
 
 class FlatpakConf(PackageConfig):
-    pm: str = 'flatpak'
+    pass
 
 
 class Flatpak(PackageManager):

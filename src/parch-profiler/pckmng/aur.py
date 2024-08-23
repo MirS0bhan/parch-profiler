@@ -11,9 +11,9 @@ class Paru(PackageManager):
     pckconf: ParuConf = ParuConf
 
     def install(self):
-        cmd = sudo[paru['-Syu', self.pckconf.packages]]
+        cmd = sudo[paru["-S", "--noconfirm", self.pckconf.packages]]
         cmd()
 
     def list(self):
-        cmd = paru["-Qeq"]
+        cmd = paru["-Qmq"]
         return ParuConf(packages=cmd().splitlines())

@@ -4,16 +4,15 @@ from pydantic import BaseModel
 
 
 class PackageConfig(BaseModel):
-    pm: str  # package manager name
     packages: List[str]
 
 
 class PackageManager(ABC):
     pckconf: Type[PackageConfig] = None
 
-    def __init__(self, pckconf: PackageConfig):
-        if isinstance(pckconf, self.pckconf):
-            self.pckconf = pckconf
+    # def __init__(self, pckconf: PackageConfig):
+    #     if isinstance(pckconf, self.pckconf):
+    #         self.pckconf = pckconf
 
     @abstractmethod
     def install(self):

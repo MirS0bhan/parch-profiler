@@ -4,14 +4,14 @@ from .base import PackageConfig, PackageManager
 
 
 class PacmanConf(PackageConfig):
-    pm: str = 'pacman'
+    pass
 
 
 class Pacman(PackageManager):
     pckconf: PacmanConf = PacmanConf
 
     def install(self):
-        cmd = sudo[pacman['-Syu', self.pckconf.packages]]
+        cmd = sudo[pacman["-S", "--noconfirm", self.pckconf.packages]]
         cmd()
 
     def list(self):
