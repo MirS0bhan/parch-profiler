@@ -1,8 +1,8 @@
-from typing import Dict, Type, List, Optional
+from typing import Optional
 
 from pydantic import BaseModel
 
-from pckmng import PackageConfig, pckmng_gen, pckmng_ins, PACKAGES
+from .pckmng import pckmng_gen, pckmng_ins, PACKAGES
 from .systemd import services_list, enable_service_list
 
 
@@ -12,7 +12,7 @@ class Config(BaseModel):
 
 
 def install_config(conf: Config):
-    pckmng_ins(conf.packages) # installing packages
+    pckmng_ins(conf.packages)  # installing packages
 
     if conf.systemd_services:
         enable_service_list(conf.systemd_services)

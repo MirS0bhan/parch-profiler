@@ -1,4 +1,4 @@
-from plumbum.cmd import sudo, paru
+from plumbum.cmd import paru
 
 from .base import PackageConfig, PackageManager
 

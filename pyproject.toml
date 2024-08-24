@@ -1,0 +1,25 @@
+[tool.poetry]
+name = "parch_profiler"
+version = "0.1.0"
+description = "parch linux basic congiuration manager"
+authors = ["Your Name <you@example.com>"]
+license = "GNU GENERAL PUBLIC LICENSE v3"
+readme = "README.md"
+
+packages = [
+    { include = "parch_profiler", from = "src" }
+]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+pydantic = "^2.8.2"
+typer = "^0.12.4"
+plumbum = "^1.8.3"
+toml = "^0.10.2"
+
+[tool.poetry.scripts]
+parch-profiler = "parch_profiler.cli:app"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
