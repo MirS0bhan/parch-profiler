@@ -1,4 +1,3 @@
-
 ### 📦 **Parch-Profiler**
 
 Parch-Profiler is a powerful Python-based utility designed specifically for Parch Linux. It simplifies the management of system packages and configurations by allowing you to generate, validate, and install packages—including AUR and Flatpak—using a structured TOML configuration file.
@@ -34,7 +33,7 @@ Parch-Profiler is a powerful Python-based utility designed specifically for Parc
 To install packages, clone configurations, and enable services:
 
 ```bash
-python profiler.py --load config.toml
+parch-profiler apply --config config.toml
 ```
 
 ### **2. Validating a TOML Configuration**
@@ -42,7 +41,7 @@ python profiler.py --load config.toml
 Check if your TOML file is correctly formatted:
 
 ```bash
-python profiler.py --check config.toml
+parch-profiler check config.toml
 ```
 
 ### **3. Generating a System Package List**
@@ -50,22 +49,8 @@ python profiler.py --check config.toml
 Generate a TOML file listing all installed Pacman, AUR, and Flatpak packages:
 
 ```bash
-python profiler.py --generate-system output.toml
+parch-profiler gen
 ```
-
-### **4. Generating a TOML from a Text File**
-
-Convert a simple text file into a TOML configuration:
-
-```bash
-python profiler.py --generate-file input.txt output.toml
-```
-
-### **5. Reviewing and Editing Generated TOML Files**
-
-After generating a TOML file, you will be prompted to review and edit it using your preferred text editor (`vim` or `nano`).
-
----
 
 ## 🧰 **Sample `proto.toml` File**
 
@@ -73,7 +58,7 @@ Here’s a sample `proto.toml` file that you can use as a starting point for you
 
 ```toml
 # Pacman packages to be installed
-[packages]
+[packages.pacman]
 packages = [
     "base-devel",
     "neovim",
@@ -81,22 +66,18 @@ packages = [
 ]
 
 # AUR packages to be installed
-[aur]
-aur_packages = [
+[packages.paru]
+packages = [
     "google-chrome",
     "paru-bin"
 ]
 
 # Flatpak packages to be installed
-[flatpak]
-flatpak_packages = [
+[packages.flatpak]
+packages = [
     "com.spotify.Client",
     "org.videolan.VLC"
 ]
-
-# Configuration repositories to clone
-[config]
-nvim = { url = "https://github.com/yourusername/nvim-config.git" }
 
 # Systemd services to enable and start
 [systemd]
@@ -108,26 +89,18 @@ systemd_services = [
 
 ---
 
-## 📄 **Sample `input.txt` for TOML Generation**
-
-If you prefer to start from a simple text file, here’s how your `input.txt` might look:
-
-```text
-packages: base-devel, neovim, git
-aur: google-chrome, paru-bin
-flatpak: com.spotify.Client, org.videolan.VLC
-```
-
----
-
 ## 🛠️ **Installation**
 
 To use Parch-Profiler on Parch Linux, clone the repository and ensure you have Python installed on your system:
 
 ```bash
-git clone https://git.parchlinux.com/applications/parch-profiler.git
-cd parch-profiler
-python profiler.py --help
+git clone https://github.com/MirS0bhan/parch-profiler.git
+python parch-profiler --help
+```
+OR
+```bash
+sudo pacman -S parch-profiler
+parch-profiler --help
 ```
 
 ---
@@ -146,7 +119,7 @@ This project is licensed under the GPL-3 License - see the [LICENSE](./LICENSE) 
 
 ## 🛠️ **Requirements**
 
-- **Python 3.x**
+- **Python ^3.8**
 - **Parch Linux**
 - **Pacman, paru, flatpak**
 
