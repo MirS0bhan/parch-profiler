@@ -7,13 +7,19 @@ class PacmanConf(PackageConfig):
     pass
 
 
+# commands
+install_pck = sudo[pacman["-S", "--noconfirm"]]
+list_pck = pacman["-Qeq"]
+
+
 class Pacman(PackageManager):
     pckconf: PacmanConf = PacmanConf
 
-    def install(self):
-        cmd = sudo[pacman["-S", "--noconfirm", self.pckconf.packages]]
-        cmd()
+    def install(self, pckconf: PacmanConf):
+        cmd = install_pck[pckconf.packages]
+        return cmd()
 
-    def list(self):
-        cmd = pacman["-Qeq"]
-        return PacmanConf(packages=cmd().splitlines())
+    @classmethod
+    def list(cls) -> PacmanConf:
+        cmd = list_pck
+        return cls.pckconf(packages=cmd().splitlines())

@@ -7,14 +7,20 @@ class FlatpakConf(PackageConfig):
     pass
 
 
+# commands
+install_pck = flatpak["install", "-y"]
+list_pck = flatpak["list", "--app", "--columns=application"]
+
+
 class Flatpak(PackageManager):
     pckconf: FlatpakConf = FlatpakConf
 
     def install(self):
-        cmd = flatpak["install", "-y", self.pckconf.packages]
+        cmd = install_pck[self.pckconf.packages]
         return cmd()
 
-    def list(self):
-        cmd = flatpak["list", "--app", "--columns=application"]
-        return FlatpakConf(packages=cmd().splitlines())
+    @classmethod
+    def list(cls):
+        cmd = list_pck
+        return cls.pckconf(packages=cmd().splitlines())
 

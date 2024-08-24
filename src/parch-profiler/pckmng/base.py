@@ -1,23 +1,26 @@
-from typing import Type, List
+from typing import Type, List, NewType, Dict
 from abc import ABC, abstractmethod
 from pydantic import BaseModel
 
 
 class PackageConfig(BaseModel):
-    packages: List[str]
+    packages: List[str] = []
 
 
 class PackageManager(ABC):
     pckconf: Type[PackageConfig] = None
 
-    # def __init__(self, pckconf: PackageConfig):
-    #     if isinstance(pckconf, self.pckconf):
-    #         self.pckconf = pckconf
+    def __init__(self):
+        pass
 
     @abstractmethod
-    def install(self):
+    def install(self, packages: PackageConfig):
         raise NotImplemented()
 
-    @property
-    def list(self):
+    @classmethod
+    @abstractmethod
+    def list(cls) -> PackageConfig:
         raise NotImplemented()
+
+
+PACKAGES = NewType("PACKAGES", Dict[str, PackageConfig])

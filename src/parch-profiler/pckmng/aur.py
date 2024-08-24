@@ -4,16 +4,22 @@ from .base import PackageConfig, PackageManager
 
 
 class ParuConf(PackageConfig):
-    pm: str = 'paru'
+    pass
+
+
+# command
+install_pck = paru["-S", "--noconfirm"]
+list_pck = paru["-Qmq"]
 
 
 class Paru(PackageManager):
     pckconf: ParuConf = ParuConf
 
-    def install(self):
-        cmd = sudo[paru["-S", "--noconfirm", self.pckconf.packages]]
-        cmd()
+    def install(self, pckconf: ParuConf):
+        cmd = install_pck[pckconf.packages]
+        return cmd()
 
-    def list(self):
-        cmd = paru["-Qmq"]
-        return ParuConf(packages=cmd().splitlines())
+    @classmethod
+    def list(cls):
+        cmd = list_pck
+        return cls.pckconf(packages=cmd().splitlines())
