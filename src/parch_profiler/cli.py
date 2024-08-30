@@ -1,5 +1,6 @@
 from pathlib import Path
 
+import vlidt
 import typer
 import toml
 
@@ -16,8 +17,10 @@ def gen(output: Path = typer.Option(Path(CONFIG_FILE), help="Path to save the ge
     """
     Generate a config file with the list of installed packages.
     """
-    dd = generate_config(*list(_package_managers.keys())).model_dump()
-    toml.dump(dd, open(output, "w"))
+    conf = generate_config(*list(_package_managers.keys()))
+    if vlidt.base.validate(conf):
+        conf = vlidt.dump(conf)
+        toml.dump(conf, open(output, "w"))
 
     typer.echo(f"Config file generated at {output}")
 
@@ -28,7 +31,7 @@ def apply(config: Path = typer.Option(Path(CONFIG_FILE), help="Path to the confi
     Apply the packages from the config file.
     """
     dd = toml.load(open(config, "r"))
-    install_config(Config(**dd))
+    install_config(vlidt.load(Config, dd))
     typer.echo("Packages applied successfully.")
 
 
@@ -37,7 +40,12 @@ def check(config: Path = typer.Option(Path(CONFIG_FILE), help="Path to the confi
     """
     Validate the config file format.
     """
-    # Implementation goes here
+    data = toml.load(open(config, "r"))
+    conf = vlidt.load(Config, data)
+    vlidt.base.validate(conf)
+    conf = vlidt.dump(conf)
+    assert conf != data
+    toml.dump(conf, open(config, "w"))
     typer.echo("Config file is valid.")
 
 

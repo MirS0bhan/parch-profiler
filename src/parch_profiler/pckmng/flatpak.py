@@ -1,6 +1,6 @@
 from plumbum.cmd import flatpak
 
-from .base import PackageConfig, PackageManager
+from .base import PackageConfig
 
 
 class FlatpakConf(PackageConfig):
@@ -12,15 +12,11 @@ install_pck = flatpak["install", "-y"]
 list_pck = flatpak["list", "--app", "--columns=application"]
 
 
-class Flatpak(PackageManager):
-    pckconf: FlatpakConf = FlatpakConf
+def install(self):
+    cmd = install_pck[self.pckconf.packages]
+    return cmd()
 
-    def install(self):
-        cmd = install_pck[self.pckconf.packages]
-        return cmd()
 
-    @classmethod
-    def list(cls):
-        cmd = list_pck
-        return cls.pckconf(packages=cmd().splitlines())
-
+def pkg_list():
+    cmd = list_pck
+    return FlatpakConf(packages=cmd().splitlines())

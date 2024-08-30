@@ -1,6 +1,6 @@
 from plumbum.cmd import paru
 
-from .base import PackageConfig, PackageManager
+from .base import PackageConfig
 
 
 class ParuConf(PackageConfig):
@@ -12,14 +12,11 @@ install_pck = paru["-S", "--noconfirm"]
 list_pck = paru["-Qmq"]
 
 
-class Paru(PackageManager):
-    pckconf: ParuConf = ParuConf
+def install(pkg_conf: ParuConf):
+    cmd = install_pck[pkg_conf.packages]
+    return cmd()
 
-    def install(self, pckconf: ParuConf):
-        cmd = install_pck[pckconf.packages]
-        return cmd()
 
-    @classmethod
-    def list(cls):
-        cmd = list_pck
-        return cls.pckconf(packages=cmd().splitlines())
+def pkg_list():
+    cmd = list_pck
+    return ParuConf(packages=cmd().splitlines())

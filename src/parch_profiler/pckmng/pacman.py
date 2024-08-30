@@ -1,6 +1,6 @@
 from plumbum.cmd import sudo, pacman
 
-from .base import PackageConfig, PackageManager
+from .base import PackageConfig
 
 
 class PacmanConf(PackageConfig):
@@ -12,14 +12,11 @@ install_pck = sudo[pacman["-S", "--noconfirm"]]
 list_pck = pacman["-Qeq"]
 
 
-class Pacman(PackageManager):
-    pckconf: PacmanConf = PacmanConf
+def install(pkg_conf: PacmanConf):
+    cmd = install_pck[pkg_conf.packages]
+    return cmd()
 
-    def install(self, pckconf: PacmanConf):
-        cmd = install_pck[pckconf.packages]
-        return cmd()
 
-    @classmethod
-    def list(cls) -> PacmanConf:
-        cmd = list_pck
-        return cls.pckconf(packages=cmd().splitlines())
+def pkg_list() -> PacmanConf:
+    cmd = list_pck
+    return PacmanConf(packages=cmd().splitlines())

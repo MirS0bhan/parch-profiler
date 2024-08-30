@@ -1,14 +1,16 @@
-from typing import Optional
+from typing import Optional, Dict, Type, List
 
-from pydantic import BaseModel
+from vlidt import BaseModel
 
-from .pckmng import pckmng_gen, pckmng_ins, PACKAGES
-from .systemd import services_list, enable_service_list
+from .pckmng import pckmng_gen, pckmng_ins, PackageConfig
+from .systemd import enable_service_list
+from .nvim import nvim_upstream, NvimConfig
 
 
 class Config(BaseModel):
-    packages: PACKAGES
-    systemd_services: Optional[services_list] = []
+    packages: Dict[str, PackageConfig]
+    systemd_services: Optional[List[str]] = None
+    nvim: Optional[NvimConfig] = None
 
 
 def install_config(conf: Config):
@@ -20,5 +22,6 @@ def install_config(conf: Config):
 
 def generate_config(*pm_names):
     return Config(
-        packages=pckmng_gen(*pm_names)
+        pckmng_gen(*pm_names),
+        nvim=nvim_upstream()
     )
