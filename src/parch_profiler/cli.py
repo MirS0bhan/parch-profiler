@@ -11,6 +11,14 @@ app = typer.Typer()
 
 CONFIG_FILE = "packages_config.toml"
 
+from rich.console import Console
+
+
+app = typer.Typer()
+console = Console()
+
+CONFIG_FILE = "config.toml"  # Define your default config file path
+
 
 @app.command()
 def gen(output: Path = typer.Option(Path(CONFIG_FILE), help="Path to save the generated config file")):
@@ -20,9 +28,10 @@ def gen(output: Path = typer.Option(Path(CONFIG_FILE), help="Path to save the ge
     conf = generate_config(*list(_package_managers.keys()))
     if vlidt.base.validate(conf):
         conf = vlidt.dump(conf)
-        toml.dump(conf, open(output, "w"))
+        with open(output, "w") as f:
+            toml.dump(conf, f)
 
-    typer.echo(f"Config file generated at {output}")
+    console.print(f"Config file generated at [bold green]{output}[/bold green] :boom:")
 
 
 @app.command()
@@ -32,7 +41,7 @@ def apply(config: Path = typer.Option(Path(CONFIG_FILE), help="Path to the confi
     """
     dd = toml.load(open(config, "r"))
     install_config(vlidt.load(Config, dd))
-    typer.echo("Packages applied successfully.")
+    console.print("[bold green]Packages applied successfully.[/bold green]")
 
 
 @app.command()
@@ -45,8 +54,9 @@ def check(config: Path = typer.Option(Path(CONFIG_FILE), help="Path to the confi
     vlidt.base.validate(conf)
     conf = vlidt.dump(conf)
     assert conf != data
-    toml.dump(conf, open(config, "w"))
-    typer.echo("Config file is valid.")
+    with open(config, "w") as f:
+        toml.dump(conf, f)
+    console.print("[bold green]Config file is valid.[/bold green] :white_check_mark:")
 
 
 def main():

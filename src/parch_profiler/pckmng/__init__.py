@@ -11,7 +11,7 @@ _package_managers = {
     ]
 }
 
-print(_package_managers)
+
 def package_manager(name: str):
     return _package_managers[name]
 
