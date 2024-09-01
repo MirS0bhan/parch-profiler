@@ -1,6 +1,7 @@
 from ..pckmng import pacman, aur, flatpak
 
 from .base import PackageConfig
+from vlidt import BaseModel
 
 
 _package_managers = {
@@ -12,14 +13,22 @@ _package_managers = {
 }
 
 
+class PackageManager(BaseModel):
+    pacman: pacman.PacmanConf
+    aur: aur.ParuConf
+    flatpak: flatpak.FlatpakConf
+
+
 def package_manager(name: str):
     return _package_managers[name]
 
 
-def pckmng_gen(*packages: str):
-    return {
-        name : package_manager(name).pkg_list() for name in packages
-    }
+def pckmng_gen():
+    return PackageManager(
+        pacman.pkg_list(),
+        aur.pkg_list(),
+        flatpak.pkg_list()
+    )
 
 
 def pckmng_ins(packages):

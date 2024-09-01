@@ -1,3 +1,5 @@
+from typing import Optional
+
 from plumbum.cmd import git
 from os.path import expanduser
 
@@ -5,7 +7,7 @@ from vlidt import BaseModel
 
 
 class NvimConfig(BaseModel):
-    url: str
+    url: Optional[str] = None
 
 
 nvim_git_dir = f"{expanduser('~')}/.config/nvim/.git"
@@ -20,10 +22,10 @@ def nvim_upstream():
     """
     try:
         # Execute the Git command with the specified Git directory and working tree
-        remote = git[*_dir, "remote", "-v", "get-url", "origin"]()
+        remote = git[*_dir, "remote", "-v", "get-url", "origin"]().strip()
         return NvimConfig(remote)
     except Exception as e:
-        print(f"Error retrieving Git remotes: {e}")
+        print(f"Error retrieving Git remotes: {e}. cant resolve nvim config upstream")
         return None
 
 

@@ -5,7 +5,7 @@ import typer
 import toml
 
 from .profiler import install_config, generate_config, Config
-from .pckmng import _package_managers
+
 
 app = typer.Typer()
 
@@ -25,7 +25,7 @@ def gen(output: Path = typer.Option(Path(CONFIG_FILE), help="Path to save the ge
     """
     Generate a config file with the list of installed packages.
     """
-    conf = generate_config(*list(_package_managers.keys()))
+    conf = generate_config()
     if vlidt.base.validate(conf):
         conf = vlidt.dump(conf)
         with open(output, "w") as f:
