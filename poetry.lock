@@ -204,16 +204,19 @@ dev = ["mypy", "pylint", "pytest", "pytest-cov", "rich"]
 
 [[package]]
 name = "vlidt"
-version = "0.2.0"
+version = "0.2.2"
 description = "dataclass & validation simple as well as hell."
 optional = false
 python-versions = "<4.0,>=3.8"
 files = [
-    {file = "vlidt-0.2.0-py3-none-any.whl", hash = "sha256:27b6f6a1398cbbbbc7ec309af5d8a3a9567bbedc000cc638cc8170874a43bdcf"},
-    {file = "vlidt-0.2.0.tar.gz", hash = "sha256:bd7ca0c054f48e0588b53363b1fe0bcc56fcb2369565867ee78b60cf1fc0873e"},
+    {file = "vlidt-0.2.2-py3-none-any.whl", hash = "sha256:38be3328510ffb0a56c49e9b5eb26554f9549e3ad5b8b995b6335db6f9aca49f"},
+    {file = "vlidt-0.2.2.tar.gz", hash = "sha256:9268d45d97b894b61ff8d6682c09a5710ce193b064f1dbc5c000eafb166c5d7f"},
 ]
+
+[package.dependencies]
+typing-validation = ">=1.2.11.post4,<2.0.0"
 
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8"
-content-hash = "cad8f7b6cd9ac88607033380108125202348bda0668203a8c9f144a4494ab9fe"
+content-hash = "c52741cb4d6436f04978ffb95818cddb3d187d90fac66d5d58ea73539ee35f4f"

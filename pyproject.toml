@@ -15,8 +15,8 @@ python = "^3.8"
 typer = "^0.12.4"
 plumbum = "^1.8.3"
 toml = "^0.10.2"
-vlidt = "^0.2.0"
 typing-validation = "^1.2.11.post4"
+vlidt = "^0.2.1"
 
 [tool.poetry.scripts]
 parch-profiler = "parch_profiler.cli:app"
